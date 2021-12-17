@@ -27,6 +27,20 @@ async function checkUserFree(req, res, next){
     }
 }
 
+async function checkUserExists(req,res,next){
+    try{
+        const {username} = req.body;
+        const [userFromDb] = await Users.findBy({username});
+        if(!userFromDb){
+            return next({status: 401, message: "invalid credentials"})
+        }else{
+            next()
+        }
+    }catch (err){
+        next(err)
+    }
+}
+
 module.exports = {
-    checkCredentials, checkUserFree
+    checkCredentials, checkUserFree, checkUserExists
 }
