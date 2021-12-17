@@ -4,7 +4,7 @@ async function checkCredentials(req, res, next){
     try{
         const {username, password} = req.body;
         if(!username || !password){
-            return next({status: 401, message:"username and password required"})
+            res.json({message:"username and password required"})
         }else{
             next()
         }
@@ -18,7 +18,8 @@ async function checkUserFree(req, res, next){
         const {username} = req.body;
         const [userFromDb] = await Users.findBy({username})
         if(userFromDb){
-            return next({status: 422, message: "username taken"})
+            // return next({status: 422, message: "username taken"})
+            res.json({message: "username taken"})
         }else{
             next()
         }
@@ -32,7 +33,7 @@ async function checkUserExists(req,res,next){
         const {username} = req.body;
         const [userFromDb] = await Users.findBy({username});
         if(!userFromDb){
-            return next({status: 401, message: "invalid credentials"})
+            res.json({message: "invalid credentials"})
         }else{
             next()
         }
